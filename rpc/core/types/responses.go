@@ -234,6 +234,10 @@ type ResultBroadcastEvidence struct {
 	Hash []byte `json:"hash"`
 }
 
+type ResultStats struct {
+	Peers map[p2p.ID]uint16 `json:"peers"`
+}
+
 // empty results
 type (
 	ResultUnsafeFlushMempool struct{}

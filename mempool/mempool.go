@@ -7,6 +7,7 @@ import (
 	"math"
 
 	abci "github.com/tendermint/tendermint/abci/types"
+	"github.com/tendermint/tendermint/p2p"
 	"github.com/tendermint/tendermint/types"
 )
 
@@ -96,6 +97,8 @@ type Mempool interface {
 
 	// SizeBytes returns the total size of all txs in the mempool.
 	SizeBytes() int64
+
+	Stats() map[p2p.ID]uint16
 }
 
 // PreCheckFunc is an optional filter executed before CheckTx and rejects

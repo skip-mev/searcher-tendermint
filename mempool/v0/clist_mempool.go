@@ -59,6 +59,7 @@ type CListMempool struct {
 
 	logger  log.Logger
 	metrics *mempool.Metrics
+	stats   map[p2p.ID]uint16
 }
 
 var _ mempool.Mempool = &CListMempool{}
@@ -84,6 +85,7 @@ func NewCListMempool(
 		recheckEnd:    nil,
 		logger:        log.NewNopLogger(),
 		metrics:       mempool.NopMetrics(),
+		stats:         make(map[p2p.ID]uint16),
 	}
 
 	if cfg.CacheSize > 0 {
@@ -109,6 +111,10 @@ func (mem *CListMempool) EnableTxsAvailable() {
 // SetLogger sets the Logger.
 func (mem *CListMempool) SetLogger(l log.Logger) {
 	mem.logger = l
+}
+
+func (mem *CListMempool) Stats() map[p2p.ID]uint16 {
+	return mem.Stats()
 }
 
 // WithPreCheck sets a filter for the mempool to reject a tx if f(tx) returns
@@ -406,6 +412,14 @@ func (mem *CListMempool) resCbFirstTime(
 				"total", mem.Size(),
 			)
 			mem.notifyTxsAvailable()
+
+			_, err := mem.stats[peerP2PID]
+
+			if err {
+				mem.stats[peerP2PID] = 1
+			} else {
+				mem.stats[peerP2PID] += 1
+			}
 		} else {
 			// ignore bad transaction
 			mem.logger.Debug(

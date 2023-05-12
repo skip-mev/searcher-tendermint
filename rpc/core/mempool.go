@@ -181,3 +181,9 @@ func CheckTx(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultCheckTx, error) 
 	}
 	return &ctypes.ResultCheckTx{ResponseCheckTx: *res}, nil
 }
+
+func Stats(ctx *rpctypes.Context) (*ctypes.ResultStats, error) {
+	res := env.Mempool.Stats()
+
+	return &ctypes.ResultStats{Peers: res}, nil
+}
