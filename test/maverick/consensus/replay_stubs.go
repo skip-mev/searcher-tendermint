@@ -4,6 +4,7 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/clist"
 	mempl "github.com/tendermint/tendermint/mempool"
+	"github.com/tendermint/tendermint/p2p"
 	tmstate "github.com/tendermint/tendermint/proto/tendermint/state"
 	"github.com/tendermint/tendermint/proxy"
 	"github.com/tendermint/tendermint/types"
@@ -34,6 +35,7 @@ func (emptyMempool) Update(
 ) error {
 	return nil
 }
+func (emptyMempool) Stats() map[p2p.ID]uint16      { return make(map[p2p.ID]uint16) }
 func (emptyMempool) Flush()                        {}
 func (emptyMempool) FlushAppConn() error           { return nil }
 func (emptyMempool) TxsAvailable() <-chan struct{} { return make(chan struct{}) }
