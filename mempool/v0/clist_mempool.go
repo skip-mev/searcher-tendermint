@@ -114,7 +114,7 @@ func (mem *CListMempool) SetLogger(l log.Logger) {
 }
 
 func (mem *CListMempool) Stats() map[p2p.ID]uint16 {
-	return mem.Stats()
+	return mem.stats
 }
 
 // WithPreCheck sets a filter for the mempool to reject a tx if f(tx) returns
