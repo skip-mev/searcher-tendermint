@@ -404,7 +404,7 @@ func (mem *CListMempool) resCbFirstTime(
 			}
 			memTx.senders.Store(peerID, true)
 			mem.addTx(memTx)
-			mem.logger.Debug(
+			mem.logger.Info(
 				"added good transaction",
 				"tx", types.Tx(tx).Hash(),
 				"res", r,
@@ -416,8 +416,10 @@ func (mem *CListMempool) resCbFirstTime(
 			_, err := mem.stats[peerP2PID]
 
 			if err {
+				mem.logger.Info("not seen transaction (new peer)", types.Tx(tx).Hash(), "from", peerP2PID)
 				mem.stats[peerP2PID] = 1
 			} else {
+				mem.logger.Info("not seen transaction (existing peer)", types.Tx(tx).Hash(), "from", peerP2PID)
 				mem.stats[peerP2PID] += 1
 			}
 		} else {
