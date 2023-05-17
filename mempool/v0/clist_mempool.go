@@ -211,7 +211,7 @@ func (mem *CListMempool) CheckTx(
 	cb func(*abci.Response),
 	txInfo mempool.TxInfo,
 ) error {
-
+	mem.logger.Info("started checking transaction", "tx", tx.Hash(), "from", txInfo.SenderP2PID)
 	mem.updateMtx.RLock()
 	// use defer to unlock mutex because application (*local client*) might panic
 	defer mem.updateMtx.RUnlock()
@@ -381,6 +381,7 @@ func (mem *CListMempool) resCbFirstTime(
 	peerP2PID p2p.ID,
 	res *abci.Response,
 ) {
+	mem.logger.Info("called resCbFirstTime on", "tx", types.Tx(tx).Hash(), "from", peerP2PID)
 	switch r := res.Value.(type) {
 	case *abci.Response_CheckTx:
 		var postCheckErr error
